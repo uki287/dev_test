@@ -55,7 +55,16 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     """返回单例配置对象（带缓存，避免重复构造开销）。"""
-    return Settings()
+    s = Settings()
+    # 生产保护：JWT 使用默认弱密钥时告警（防止忘记配置 .env 直接部署）
+    if s.JWT_SECRET == "change-me-in-production":
+        import warnings
+        warnings.warn(
+            "JWT_SECRET 仍为默认值 'change-me-in-production'！生产环境必须设置强随机密钥（backend/.env 或环境变量）。",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    return s
 
 
 # 全局配置实例，供其他模块直接 `from app.core.config import settings` 使用

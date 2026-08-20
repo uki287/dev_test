@@ -56,6 +56,16 @@ export default function RichEditor({ value, onChange, placeholder = '请输入�
     }
   }, [editor, value])
 
+  // 组件卸载时销毁编辑器实例（释放事件监听，防止抽屉反复开关内存泄漏）
+  useEffect(() => {
+    return () => {
+      if (editorRef.current) {
+        editorRef.current.destroy()
+        editorRef.current = null
+      }
+    }
+  }, [])
+
   return (
     <div style={{ border: '1px solid #d9d9d9', borderRadius: 8, overflow: 'hidden', background: '#fff' }}>
       <Toolbar

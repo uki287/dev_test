@@ -16,6 +16,9 @@ export default function SettingsPage() {
   // Logo 上传状态（与产品封面区一致：独立 loading + 加载失败兜底）
   const [coverUploading, setCoverUploading] = useState(false)
   const [coverBroken, setCoverBroken] = useState(false)
+  // 地图图片上传状态（与 Logo 独立，避免互相干扰）
+  const [mapUploading, setMapUploading] = useState(false)
+  const [mapBroken, setMapBroken] = useState(false)
 
   // 拉取当前设置
   useEffect(() => {
@@ -144,25 +147,25 @@ export default function SettingsPage() {
                     showUploadList={false}
                     accept="image/*"
                     customRequest={async ({ file, onSuccess, onError }) => {
-                      setCoverUploading(true)
+                      setMapUploading(true)
                       try {
                         const res = await uploadFile(file as File)
                         setFieldValue('map_image', res.url)
-                        setCoverBroken(false)
+                        setMapBroken(false)
                         message.success('地图图片上传成功')
                         onSuccess?.(res)
                       } catch (e: any) {
                         onError?.(e)
                         message.error(e.message || '上传失败')
                       } finally {
-                        setCoverUploading(false)
+                        setMapUploading(false)
                       }
                     }}
                   >
                     <div>
                       {img && (
                         <div style={{ position: 'relative', marginBottom: 10 }}>
-                          {coverBroken ? (
+                          {mapBroken ? (
                             <div style={{
                               width: 320, height: 180, borderRadius: 8,
                               background: '#FAFAFA', border: '1px dashed #E5E0D8',
@@ -175,7 +178,7 @@ export default function SettingsPage() {
                             <img
                               src={img}
                               alt="地图图片预览"
-                              onError={() => setCoverBroken(true)}
+                              onError={() => setMapBroken(true)}
                               style={{
                                 width: 320, height: 180, objectFit: 'cover',
                                 borderRadius: 8, cursor: 'pointer',
@@ -185,7 +188,7 @@ export default function SettingsPage() {
                         </div>
                       )}
                       <Space>
-                        <Button icon={img ? <SyncOutlined /> : <UploadOutlined />} loading={coverUploading}>
+                        <Button icon={img ? <SyncOutlined /> : <UploadOutlined />} loading={mapUploading}>
                           {img ? '更换图片' : '上传图片'}
                         </Button>
                         {img && (

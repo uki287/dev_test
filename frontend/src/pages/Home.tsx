@@ -140,6 +140,7 @@ export default function Home() {
   const [banners, setBanners] = useState<Banner[]>([])
   const [series, setSeries] = useState<Series[]>([])
   const [products, setProducts] = useState<Product[]>([])
+  const [productTotal, setProductTotal] = useState(0)
   const [news, setNews] = useState<NewsItem[]>([])
   const [company, setCompany] = useState<Record<string, string>>({})
   const [activeSeries, setActiveSeries] = useState<number | undefined>()
@@ -161,8 +162,8 @@ export default function Home() {
   // 精选产品：系列切换
   useEffect(() => {
     getProducts({ page: 1, page_size: 8, series_id: activeSeries })
-      .then((d) => setProducts(d.items))
-      .catch(() => setProducts([]))
+      .then((d) => { setProducts(d.items); setProductTotal(d.total) })
+      .catch(() => { setProducts([]); setProductTotal(0) })
   }, [activeSeries])
 
   // 系列 id → 名称 映射（产品卡标签）
@@ -176,9 +177,9 @@ export default function Home() {
 
   // 品牌数字指标（数据来自真实接口：系列数/产品数）
   const stats = [
-    { num: String(series.length || 4), label: '产品系列' },
+    { num: String(series.length || 0), label: '产品系列' },
     { num: '5', label: '智慧空间' },
-    { num: '24', label: '智能产品' },
+    { num: String(productTotal || 0), label: '智能产品' },
     { num: '365', label: '全天候服务' },
   ]
 

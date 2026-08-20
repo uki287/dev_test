@@ -23,6 +23,10 @@ dependencies = [
     "bcrypt==4.0.1",                     # 锁定 4.0.1：与 passlib 1.7.4 兼容（5.x 不兼容会报 72 字节错误）
     "python-multipart>=0.0.9",          # 表单 / 文件上传解析
     "python-dotenv>=1.0",               # 加载 .env 文件
+    "bleach>=6.0",                      # 富文本 XSS 白名单清洗（S-03，security.clean_html）
+    "openpyxl>=3.1",                    # 预约/留言导出 xlsx（Phase D）
+    # PostgreSQL 生产库驱动（双库计划 §DB；开发期 SQLite 无需安装）
+    # 生产部署时：pip install "psycopg[binary]>=3.1" 并设 DB_URL=postgresql://...
 ]
 
 [build-system]
