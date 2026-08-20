@@ -1,0 +1,33 @@
+# ============================================================
+# 文件功能：后端工程元数据与依赖声明（PEP 621 标准）
+# 说明：声明项目名称、Python 版本要求及运行依赖。
+#       开发期可用 `pip install -e .` 安装，也可直接 `pip install <包>`。
+# 权威依据：项目开发实施方案 §4.1 技术栈 / §4.2 单仓库目录。
+# ============================================================
+[project]
+name = "tp-smart-home-backend"
+version = "0.1.0"
+description = "TP智能家居企业官网 + 后台管理系统 后端（FastAPI）"
+requires-python = ">=3.12"
+
+# 运行依赖：严格对应方案技术选型
+dependencies = [
+    "fastapi>=0.110",                   # Web 框架：路由 / 依赖注入 / OpenAPI 文档
+    "uvicorn[standard]>=0.27",          # ASGI 服务器：用于启动 FastAPI
+    "pydantic-settings>=2.1",           # 从环境变量 / .env 读取配置
+    "sqlalchemy>=2.0",                  # ORM：数据库建模与查询（2.x 风格）
+    "alembic>=1.13",                    # 数据库迁移工具
+    "redis>=5.0",                       # 缓存与限流（一期启用，见方案决策 D2）
+    "python-jose[cryptography]>=3.3",   # JWT 签发与校验
+    "passlib[bcrypt]>=1.7",             # 密码哈希（bcrypt）
+    "bcrypt==4.0.1",                     # 锁定 4.0.1：与 passlib 1.7.4 兼容（5.x 不兼容会报 72 字节错误）
+    "python-multipart>=0.0.9",          # 表单 / 文件上传解析
+    "python-dotenv>=1.0",               # 加载 .env 文件
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]

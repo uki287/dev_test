@@ -1,0 +1,45 @@
+# ============================================================
+# TP智能家居 · Git 忽略规则
+# 说明：排除依赖/构建产物/本地数据库/上传文件/环境变量/日志。
+# ============================================================
+
+# ---- 依赖 ----
+node_modules/
+**/node_modules/
+
+# ---- 构建产物 ----
+dist/
+**/dist/
+
+# ---- Python ----
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ---- 本地数据库 / 上传 ----
+backend/app.db
+backend/uploads/
+*.sqlite
+*.sqlite3
+
+# ---- 环境变量（含密钥） ----
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ---- 日志 / 临时 ----
+*.log
+.DS_Store
+Thumbs.db
+.tmp/
+
+# ---- IDE / 编辑器 ----
+.vscode/
+.idea/
+*.swp
+
+# ---- WorkBuddy 记忆（本地私有） ----
+.workbuddy/

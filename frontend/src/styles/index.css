@@ -1,0 +1,85 @@
+/* ============================================================
+   文件功能：前台全局样式入口
+   说明：引入 Tailwind 三段指令 + 全局基础样式（字体/背景/盒模型）。
+   设计 token 由 tailwind.config.js 提供（ink/gold/cream/line）。
+   ============================================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局基础：米白底、墨黑字、无衬线正文 */
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #faf8f4; /* cream */
+  color: #1a1a1a;     /* ink */
+  font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ 无障碍（Phase E §5） ============ */
+/* 键盘焦点金描边（WCAG 2.1 2.4.7，方案：:focus-visible 金描边） */
+:focus-visible {
+  outline: 2px solid #b98a2f;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 减少动效：动画/过渡全部降级（WCAG 2.3.3 prefers-reduced-motion） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 富文本正文排版（产品描述/新闻正文） */
+.prose p {
+  margin-bottom: 1em;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* ============ 滚动入场动画（首页企业化 2026-08-20） ============ */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-up { transform: translateY(28px); }
+.reveal-left { transform: translateX(-28px); }
+.reveal-right { transform: translateX(28px); }
+.reveal-zoom { transform: scale(0.94); }
+.reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-up,
+  .reveal-left,
+  .reveal-right,
+  .reveal-zoom {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
