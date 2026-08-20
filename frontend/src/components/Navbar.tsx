@@ -7,7 +7,7 @@
 // ============================================================
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { MenuOutlined, CloseOutlined, DownOutlined } from '@ant-design/icons'
+import { MenuOutlined, CloseOutlined, DownOutlined, UserOutlined } from '@ant-design/icons'
 import { useSite } from '../store/site'
 
 // 下拉菜单定义
@@ -131,14 +131,28 @@ export default function Navbar() {
         </nav>
 
         {/* 移动端汉堡（<768） */}
-        <button
-          className="md:hidden text-white p-2"
-          onClick={() => setDrawerOpen((v) => !v)}
-          aria-label={drawerOpen ? '关闭菜单' : '打开菜单'}
-          aria-expanded={drawerOpen}
-        >
-          {drawerOpen ? <CloseOutlined style={{ fontSize: 22 }} /> : <MenuOutlined style={{ fontSize: 22 }} />}
-        </button>
+        <div className="flex items-center gap-3">
+          {/* 登录入口（新标签打开后台登录页） */}
+          <a
+            href="http://localhost:5174/login"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 text-white/90 hover:text-gold text-sm transition-colors"
+            aria-label="登录后台管理"
+            title="登录后台管理"
+          >
+            <UserOutlined style={{ fontSize: 16 }} />
+            <span className="hidden sm:inline">登录</span>
+          </a>
+          <button
+            className="md:hidden text-white p-2"
+            onClick={() => setDrawerOpen((v) => !v)}
+            aria-label={drawerOpen ? '关闭菜单' : '打开菜单'}
+            aria-expanded={drawerOpen}
+          >
+            {drawerOpen ? <CloseOutlined style={{ fontSize: 22 }} /> : <MenuOutlined style={{ fontSize: 22 }} />}
+          </button>
+        </div>
       </div>
 
       {/* 移动端抽屉 + 遮罩 */}

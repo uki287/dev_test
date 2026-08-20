@@ -8,7 +8,7 @@
 // ============================================================
 import { useEffect, useMemo, useState } from 'react'
 import { Layout, Menu, Dropdown, Avatar, Breadcrumb, Modal, Form, Input, message } from 'antd'
-import { UserOutlined, LogoutOutlined, KeyOutlined } from '@ant-design/icons'
+import { UserOutlined, LogoutOutlined, KeyOutlined, EyeOutlined } from '@ant-design/icons'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth, doLogout } from '../store/auth'
 import { matchPerm } from '../store/auth'
@@ -115,25 +115,43 @@ export default function BasicLayout() {
           }}
         >
           <Breadcrumb items={[{ title: '后台管理' }, ...breadcrumb.map((t) => ({ title: t }))]} />
-          <Dropdown
-            menu={{
-              items: [
-                { key: 'pwd', icon: <KeyOutlined />, label: '修改密码' },
-                { type: 'divider' },
-                { key: 'logout', icon: <LogoutOutlined />, label: '退出登录' },
-              ],
-              onClick: ({ key }) => {
-                if (key === 'logout') doLogout()
-                if (key === 'pwd') setPwdOpen(true)
-              },
-            }}
-          >
-            <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              <Avatar size="small" style={{ background: '#B98A2F' }} icon={<UserOutlined />} />
-              <span>{user?.cn_name || user?.username}</span>
-              <span style={{ color: '#999', fontSize: 12 }}>{user?.role_name}</span>
-            </span>
-          </Dropdown>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {/* 预览前台：新标签打开前台首页 */}
+            <a
+              href="http://localhost:5173/"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                fontSize: 13, color: '#B98A2F', border: '1px solid #B98A2F',
+                borderRadius: 6, padding: '4px 12px', lineHeight: '20px',
+                transition: 'all .2s', textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#B98A2F'; e.currentTarget.style.color = '#fff' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#B98A2F' }}
+            >
+              <EyeOutlined /> 预览前台
+            </a>
+            <Dropdown
+              menu={{
+                items: [
+                  { key: 'pwd', icon: <KeyOutlined />, label: '修改密码' },
+                  { type: 'divider' },
+                  { key: 'logout', icon: <LogoutOutlined />, label: '退出登录' },
+                ],
+                onClick: ({ key }) => {
+                  if (key === 'logout') doLogout()
+                  if (key === 'pwd') setPwdOpen(true)
+                },
+              }}
+            >
+              <span style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                <Avatar size="small" style={{ background: '#B98A2F' }} icon={<UserOutlined />} />
+                <span>{user?.cn_name || user?.username}</span>
+                <span style={{ color: '#999', fontSize: 12 }}>{user?.role_name}</span>
+              </span>
+            </Dropdown>
+          </div>
         </Header>
 
         {/* 内容区：嵌套路由出口 */}
